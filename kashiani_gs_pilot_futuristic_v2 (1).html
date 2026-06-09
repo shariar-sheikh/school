@@ -1,0 +1,786 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+--bg:#07090F;--bg2:#0D1017;--bg3:#111520;--bg4:#161B28;
+--cyan:#00C8FF;--cyan2:#00A8D8;--cyan3:rgba(0,200,255,.12);
+--gold:#F5B800;--gold2:rgba(245,184,0,.15);
+--white:#F0F4FF;--white2:rgba(240,244,255,.7);--white3:rgba(240,244,255,.35);--white4:rgba(240,244,255,.1);
+--border:rgba(255,255,255,.08);--border2:rgba(0,200,255,.2);
+--r:10px;
+font-family:'Inter',system-ui,sans-serif;
+}
+body{background:var(--bg);color:var(--white);font-size:15px;line-height:1.7;min-height:100vh}
+.page{display:none;flex-direction:column}
+.page.on{display:flex}
+
+/* PARTICLES */
+.particles{position:absolute;top:0;left:0;width:100%;height:100%;overflow:hidden;pointer-events:none;z-index:0}
+.dot{position:absolute;border-radius:50%;background:var(--cyan);animation:float linear infinite}
+@keyframes float{0%{opacity:0;transform:translateY(0) scale(0)}20%{opacity:.6}80%{opacity:.3}100%{opacity:0;transform:translateY(-120px) scale(1.5)}}
+
+/* NAV */
+nav{background:rgba(7,9,15,.9);border-bottom:1px solid var(--border);padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;height:58px;position:sticky;top:0;z-index:300;backdrop-filter:blur(0)}
+.logo{display:flex;align-items:center;gap:10px;cursor:pointer}
+.crest{width:38px;height:38px;border:1.5px solid var(--cyan2);border-radius:8px;display:flex;align-items:center;justify-content:center;background:var(--cyan3)}
+.crest span{color:var(--cyan);font-size:10px;font-weight:800;letter-spacing:.5px;font-family:'Space Grotesk',sans-serif;line-height:1.1;text-align:center}
+.logo-t .n1{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;color:var(--white);line-height:1.2}
+.logo-t .n2{font-size:11px;color:var(--white3);letter-spacing:.3px}
+.navl{display:flex;gap:2px}
+.nb{background:none;border:none;color:var(--white3);padding:5px 10px;border-radius:6px;cursor:pointer;font-size:13px;font-family:'Inter',sans-serif;transition:all .15s}
+.nb:hover,.nb.on{color:var(--cyan);background:var(--cyan3)}
+.nbtn{background:var(--cyan);color:#07090F;border:none;padding:7px 16px;border-radius:6px;font-weight:700;font-size:13px;cursor:pointer;font-family:'Inter',sans-serif;letter-spacing:.3px;transition:all .15s}
+.nbtn:hover{background:#00AADD}
+
+/* HERO */
+.hero{background:var(--bg);padding:80px 1.5rem 88px;position:relative;overflow:hidden}
+.hero-grid-bg{position:absolute;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:40px 40px;opacity:.4}
+.hero-glow{position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:500px;height:260px;background:rgba(0,200,255,.06);border-radius:50%;filter:blur(40px)}
+.hero-inner{max-width:860px;margin:0 auto;position:relative;z-index:1;text-align:center}
+.hero-pill{display:inline-flex;align-items:center;gap:7px;background:var(--cyan3);border:1px solid var(--border2);border-radius:20px;padding:5px 14px;margin-bottom:22px}
+.hero-pill .dot-live{width:7px;height:7px;border-radius:50%;background:var(--cyan);animation:pulse 1.5s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
+.hero-pill span{font-size:12px;color:var(--cyan);font-weight:600;letter-spacing:.8px;text-transform:uppercase}
+.hero h1{font-family:'Space Grotesk',sans-serif;font-size:3.2rem;font-weight:700;color:var(--white);line-height:1.1;margin-bottom:8px;letter-spacing:-1px}
+.hero h1 .hl{color:var(--cyan)}
+.hero h1 .gl{color:var(--gold)}
+.hero-sub{color:var(--white3);font-size:16px;max-width:520px;margin:0 auto 32px;line-height:1.75}
+.hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:52px}
+.btn-c{background:var(--cyan);color:#07090F;border:none;padding:12px 28px;border-radius:8px;font-weight:700;font-size:14.5px;cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s;letter-spacing:.2px}
+.btn-c:hover{background:#00AADD;transform:translateY(-1px)}
+.btn-o{background:transparent;color:var(--white2);border:1px solid var(--border2);padding:12px 28px;border-radius:8px;font-size:14.5px;cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s}
+.btn-o:hover{border-color:var(--cyan);color:var(--cyan)}
+.stats-strip{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--border2);border-radius:12px;overflow:hidden;background:rgba(0,200,255,.04)}
+.s-stat{padding:18px 14px;text-align:center;border-right:1px solid var(--border)}
+.s-stat:last-child{border-right:none}
+.s-stat .sn{font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:700;color:var(--cyan)}
+.s-stat .sl{font-size:11px;color:var(--white3);text-transform:uppercase;letter-spacing:.7px;margin-top:3px}
+
+/* SECTION */
+.sec{padding:60px 1.5rem}
+.inn{max-width:900px;margin:0 auto}
+.eyb{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.eyb .bar{width:20px;height:2px;background:var(--cyan)}
+.eyb span{font-size:11px;color:var(--cyan);letter-spacing:1.6px;text-transform:uppercase;font-weight:600}
+.sec-h{font-family:'Space Grotesk',sans-serif;font-size:1.9rem;font-weight:700;color:var(--white);line-height:1.2;margin-bottom:10px}
+.sec-p{color:var(--white3);font-size:15px;max-width:560px;margin-bottom:32px;line-height:1.75}
+.divl{height:1px;background:var(--border);margin:44px 0}
+
+/* CARDS */
+.g3{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.g2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+.g4{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.card{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:22px;transition:border-color .2s,transform .2s}
+.card:hover{border-color:var(--border2);transform:translateY(-2px)}
+.card-ic{width:40px;height:40px;border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:14px;font-size:18px}
+.c-cyan{background:var(--cyan3);border:1px solid var(--border2)}
+.c-gold{background:var(--gold2);border:1px solid rgba(245,184,0,.25)}
+.card h3{font-size:15px;font-weight:700;color:var(--white);margin-bottom:6px;font-family:'Space Grotesk',sans-serif}
+.card p{font-size:13.5px;color:var(--white3);line-height:1.65}
+
+/* MARQUEE TICKER */
+.ticker{background:var(--bg3);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:12px 0;overflow:hidden;white-space:nowrap}
+.ticker-inner{display:inline-flex;gap:0;animation:scroll 28s linear infinite}
+.ticker-inner:hover{animation-play-state:paused}
+@keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.tick-item{display:inline-flex;align-items:center;gap:8px;padding:0 32px;font-size:13px;color:var(--white3)}
+.tick-item .dot{width:5px;height:5px;border-radius:50%;background:var(--cyan);flex-shrink:0}
+.tick-item span{font-weight:500;color:var(--white2)}
+
+/* RESULT CHART */
+.result-bars{display:flex;flex-direction:column;gap:12px;margin-top:8px}
+.rb-row{display:grid;grid-template-columns:100px 1fr 50px;align-items:center;gap:12px}
+.rb-label{font-size:13px;color:var(--white3);text-align:right}
+.rb-track{background:var(--bg4);border-radius:4px;height:10px;overflow:hidden}
+.rb-fill{height:100%;border-radius:4px;transition:width 1s ease}
+.rb-val{font-size:13px;font-weight:700;color:var(--white2);text-align:left}
+
+/* TIMELINE */
+.tl{padding-left:18px;border-left:1px solid var(--border2)}
+.tl-item{position:relative;padding:0 0 22px 18px}
+.tl-item:last-child{padding-bottom:0}
+.tl-dot{position:absolute;left:-6px;top:5px;width:11px;height:11px;border-radius:50%;background:var(--cyan);border:2px solid var(--bg)}
+.tl-yr{font-size:11px;font-weight:700;color:var(--cyan);letter-spacing:.8px;text-transform:uppercase;margin-bottom:2px}
+.tl-item h4{font-size:14.5px;font-weight:600;color:var(--white);font-family:'Space Grotesk',sans-serif;margin-bottom:3px}
+.tl-item p{font-size:13px;color:var(--white3)}
+
+/* TEACHER CARDS */
+.tgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(188px,1fr));gap:12px}
+.tc{background:var(--bg3);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:border-color .2s,transform .2s;cursor:pointer}
+.tc:hover{border-color:var(--border2);transform:translateY(-2px)}
+.tc-top{padding:20px 16px 14px;text-align:center;border-bottom:1px solid var(--border)}
+.av{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;color:var(--bg);margin:0 auto 10px;font-family:'Space Grotesk',sans-serif;border:2px solid var(--border2)}
+.tc h4{font-size:14px;font-weight:700;color:var(--white);font-family:'Space Grotesk',sans-serif;margin-bottom:3px}
+.tc .tr{font-size:12px;color:var(--white3)}
+.tc-bot{padding:10px 14px}
+.tc-r{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--white3);margin-bottom:5px}
+.tc-r i{color:var(--cyan);font-size:13px}
+.dbadge{display:inline-block;font-size:11px;font-weight:600;padding:2px 8px;border-radius:4px;margin-top:4px;background:var(--cyan3);color:var(--cyan);border:1px solid var(--border2)}
+
+/* GALLERY */
+.gal-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.gi{border-radius:10px;overflow:hidden;cursor:pointer;position:relative;transition:transform .2s,border-color .2s;border:1px solid var(--border)}
+.gi:hover{transform:scale(1.02);border-color:var(--border2)}
+.gi-cell{aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;font-size:2.4rem}
+.gi-cap{position:absolute;bottom:0;left:0;right:0;background:rgba(7,9,15,.85);padding:8px 10px;border-top:1px solid var(--border)}
+.gi-cap p{font-size:12px;color:var(--white2);font-weight:500}
+.gi-cap span{font-size:11px;color:var(--white3)}
+
+/* NOTICES */
+.nlist{display:flex;flex-direction:column;gap:10px}
+.nc{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:14px 16px;display:flex;justify-content:space-between;align-items:flex-start;gap:12px;transition:border-color .2s}
+.nc:hover{border-color:var(--border2)}
+.nc.urg{border-left:3px solid #E24B4A;border-radius:0 10px 10px 0}
+.nc.evt{border-left:3px solid var(--cyan);border-radius:0 10px 10px 0}
+.nc h4{font-size:14px;font-weight:600;color:var(--white);margin-bottom:3px}
+.nc p{font-size:13px;color:var(--white3)}
+.ntag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:4px;margin-bottom:6px;letter-spacing:.4px}
+.ndate{font-size:12px;color:var(--white3);white-space:nowrap;padding-top:2px}
+
+/* FORM */
+.fb{background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:28px}
+.fg{margin-bottom:14px}
+.fg label{display:block;font-size:12px;font-weight:600;color:var(--white3);margin-bottom:5px;text-transform:uppercase;letter-spacing:.6px}
+.fg input,.fg textarea,.fg select{width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:7px;font-size:14.5px;font-family:'Inter',sans-serif;background:var(--bg4);color:var(--white);transition:border-color .15s}
+.fg input:focus,.fg textarea:focus,.fg select:focus{outline:none;border-color:var(--cyan)}
+.fg textarea{min-height:90px;resize:vertical}
+.fg select option{background:var(--bg3)}
+.fr{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+/* FILTER PILLS */
+.fpills{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px}
+.fp{background:var(--bg3);border:1px solid var(--border);padding:5px 13px;border-radius:20px;font-size:13px;cursor:pointer;font-family:'Inter',sans-serif;color:var(--white3);transition:all .15s}
+.fp.on{background:var(--cyan);color:var(--bg);border-color:var(--cyan);font-weight:600}
+
+/* SEARCH BAR */
+.search-wrap{position:relative;margin-bottom:22px}
+.search-wrap i{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--white3);font-size:16px}
+.search-wrap input{width:100%;padding:10px 12px 10px 38px;border:1px solid var(--border);border-radius:8px;background:var(--bg3);color:var(--white);font-size:14px;font-family:'Inter',sans-serif;transition:border-color .15s}
+.search-wrap input:focus{outline:none;border-color:var(--cyan)}
+.search-wrap input::placeholder{color:var(--white3)}
+
+/* MODAL TEACHER DETAIL */
+.modal-bg{background:rgba(0,0,0,.7);padding:20px;display:flex;align-items:center;justify-content:center;min-height:220px}
+.modal{background:var(--bg3);border:1px solid var(--border2);border-radius:16px;padding:28px;max-width:440px;width:100%;position:relative}
+.modal-close{position:absolute;top:14px;right:14px;background:var(--bg4);border:1px solid var(--border);color:var(--white3);width:28px;height:28px;border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px}
+#modal-wrap{display:none}
+
+/* INFO TABLE */
+.itab{width:100%;border-collapse:collapse;font-size:14px}
+.itab tr{border-bottom:1px solid var(--border)}
+.itab td{padding:10px 0}
+.itab td:first-child{color:var(--white3);width:45%;font-weight:500}
+.itab td:last-child{color:var(--white);font-weight:500}
+
+/* QUOTE BLOCK */
+.qblock{border-left:3px solid var(--cyan);padding:14px 18px;background:rgba(0,200,255,.05);border-radius:0 10px 10px 0;font-size:16px;color:var(--white2);font-style:italic;line-height:1.7;margin:22px 0}
+
+/* RESULTS DASHBOARD */
+.dash-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:28px}
+.dcard{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center}
+.dcard .dn{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700;color:var(--cyan)}
+.dcard .dl{font-size:11.5px;color:var(--white3);text-transform:uppercase;letter-spacing:.5px;margin-top:4px}
+
+/* MAP */
+.map-ph{background:var(--bg3);border:1px solid var(--border);border-radius:12px;height:160px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;color:var(--white3)}
+
+/* SCROLL PROGRESS */
+.spbar{height:2px;background:var(--cyan);width:0%;transition:width .1s;position:sticky;top:58px;z-index:299}
+
+/* SUCCESS MSG */
+.succ{display:none;background:rgba(0,200,100,.1);border:1px solid rgba(0,200,100,.3);border-radius:8px;padding:12px 16px;font-size:13.5px;color:#00C878;margin-top:12px;font-weight:500}
+
+/* FOOTER */
+.foot{background:var(--bg2);border-top:1px solid var(--border);padding:36px 1.5rem;display:grid;grid-template-columns:2fr 1fr 1fr;gap:32px}
+.f-logo{font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;color:var(--white);margin-bottom:6px}
+.foot p{font-size:13px;color:var(--white3);line-height:1.7}
+.foot h5{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--white3);margin-bottom:10px}
+.foot a{display:block;color:var(--white3);font-size:13px;text-decoration:none;margin-bottom:6px;transition:color .15s}
+.foot a:hover{color:var(--cyan)}
+.fbar{background:var(--bg);border-top:1px solid var(--border);padding:12px 1.5rem;text-align:center;font-size:12px;color:var(--white3)}
+.fbar span{color:var(--cyan)}
+</style>
+
+<h2 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Kashiani GS Pilot High School — futuristic school website</h2>
+
+<!-- ═══ HOME ═══ -->
+<div id="home" class="page on">
+<nav>
+  <div class="logo" onclick="go('home')">
+    <div class="crest"><span>KGS</span></div>
+    <div class="logo-t"><div class="n1">Kashiani GS Pilot HS</div><div class="n2">Est. 1954 · Gopalganj, BD</div></div>
+  </div>
+  <div class="navl">
+    <button class="nb on" onclick="go('home')">Home</button>
+    <button class="nb" onclick="go('about')">About</button>
+    <button class="nb" onclick="go('academics')">Academics</button>
+    <button class="nb" onclick="go('teachers')">Teachers</button>
+    <button class="nb" onclick="go('results')">Results</button>
+    <button class="nb" onclick="go('gallery')">Gallery</button>
+    <button class="nb" onclick="go('notice')">Notice</button>
+    <button class="nb" onclick="go('contact')">Contact</button>
+  </div>
+  <button class="nbtn" onclick="go('contact')">Enquire</button>
+</nav>
+<div class="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-glow"></div>
+  <div class="particles" id="pts"></div>
+  <div class="hero-inner">
+    <div class="hero-pill"><div class="dot-live"></div><span>Academic Year 2025–26 · Admissions Open</span></div>
+    <h1>Kashiani <span class="hl">GS Pilot</span><br><span class="gl">High School</span></h1>
+    <p class="hero-sub">Government-designated pilot institution serving Kashiani, Gopalganj since 1954 — shaping generations through knowledge, discipline, and character.</p>
+    <div class="hero-btns">
+      <button class="btn-c" onclick="go('about')">Explore School</button>
+      <button class="btn-o" onclick="go('results')">2024 Results</button>
+      <button class="btn-o" onclick="go('teachers')">Meet Faculty</button>
+    </div>
+    <div class="stats-strip">
+      <div class="s-stat"><div class="sn" id="cnt-1">0</div><div class="sl">Years of service</div></div>
+      <div class="s-stat"><div class="sn" id="cnt-2">0</div><div class="sl">Students</div></div>
+      <div class="s-stat"><div class="sn" id="cnt-3">0</div><div class="sl">Faculty members</div></div>
+      <div class="s-stat"><div class="sn" id="cnt-4">0%</div><div class="sl">SSC pass rate 2024</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="ticker">
+  <div class="ticker-inner" id="ticker-content"></div>
+</div>
+
+<div class="sec" style="background:var(--bg2)">
+  <div class="inn">
+    <div class="eyb"><div class="bar"></div><span>Why KGSPHS</span></div>
+    <h2 class="sec-h">Built for the future, rooted in 70 years</h2>
+    <p class="sec-p">A government pilot school with a legacy of excellence — now modernizing for the next generation.</p>
+    <div class="g3">
+      <div class="card"><div class="card-ic c-cyan"><i class="ti ti-building-community" style="font-size:18px;color:var(--cyan)" aria-hidden="true"></i></div><h3>Govt. Pilot Status</h3><p>One of the few Ministry-designated pilot institutions in Gopalganj — held to the highest standards.</p></div>
+      <div class="card"><div class="card-ic c-gold"><i class="ti ti-trophy" style="font-size:18px;color:var(--gold)" aria-hidden="true"></i></div><h3>Top Board Results</h3><p>96% SSC pass rate in 2024 with 14 GPA-5 recipients — best in school history.</p></div>
+      <div class="card"><div class="card-ic c-cyan"><i class="ti ti-device-laptop" style="font-size:18px;color:var(--cyan)" aria-hidden="true"></i></div><h3>ICT & Computer Lab</h3><p>30-seat computer lab with internet, digital literacy woven into every year group's curriculum.</p></div>
+      <div class="card"><div class="card-ic c-gold"><i class="ti ti-flask" style="font-size:18px;color:var(--gold)" aria-hidden="true"></i></div><h3>Science Labs</h3><p>Fully equipped Physics, Chemistry, and Biology labs for practical board exam preparation.</p></div>
+      <div class="card"><div class="card-ic c-cyan"><i class="ti ti-users" style="font-size:18px;color:var(--cyan)" aria-hidden="true"></i></div><h3>Expert Faculty</h3><p>48 qualified teachers — all holding minimum M.Sc./M.A. with B.Ed. training.</p></div>
+      <div class="card"><div class="card-ic c-gold"><i class="ti ti-planet" style="font-size:18px;color:var(--gold)" aria-hidden="true"></i></div><h3>Community Legacy</h3><p>Alumni serve in every sector of national life — doctors, engineers, civil servants, educators.</p></div>
+    </div>
+  </div>
+</div>
+
+<div style="background:var(--bg);padding:40px 1.5rem;text-align:center;border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+  <div style="max-width:600px;margin:0 auto">
+    <p style="font-size:11px;color:var(--cyan);letter-spacing:1.8px;text-transform:uppercase;font-weight:600;margin-bottom:10px">Our Motto</p>
+    <p style="font-family:'Space Grotesk',sans-serif;font-size:2rem;color:var(--white);font-weight:700;line-height:1.3">জ্ঞানই শক্তি, শৃঙ্খলাই সাফল্য</p>
+    <p style="color:var(--white3);font-size:14px;margin-top:8px;font-style:italic">"Knowledge is power, discipline is success"</p>
+  </div>
+</div>
+
+<div class="sec">
+  <div class="inn">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:start">
+      <div>
+        <div class="eyb"><div class="bar"></div><span>Latest Notices</span></div>
+        <h2 class="sec-h" style="font-size:1.5rem;margin-bottom:16px">Recent announcements</h2>
+        <div class="nlist" id="home-notices"></div>
+        <button class="btn-o" style="margin-top:14px;font-size:13px;padding:8px 18px" onclick="go('notice')">All notices →</button>
+      </div>
+      <div>
+        <div class="eyb"><div class="bar"></div><span>Quick Info</span></div>
+        <h2 class="sec-h" style="font-size:1.5rem;margin-bottom:16px">School at a glance</h2>
+        <table class="itab">
+          <tr><td>Principal</td><td>Md. Abul Kalam Azad</td></tr>
+          <tr><td>Board</td><td>Dhaka Education Board</td></tr>
+          <tr><td>Classes</td><td>VI – X (JSC & SSC)</td></tr>
+          <tr><td>Streams</td><td>Science · Humanities · Business</td></tr>
+          <tr><td>Campus</td><td>3 Acres, Kashiani, Gopalganj</td></tr>
+          <tr><td>EIIN</td><td>105XXX</td></tr>
+          <tr><td>Founded</td><td>1954</td></tr>
+          <tr><td>Phone</td><td>01XXXXXXXXX</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="foot">
+  <div><div class="f-logo">Kashiani GS Pilot High School</div><p>Kashiani, Gopalganj District<br>Dhaka Division, Bangladesh<br>EIIN: 105XXX · Est. 1954</p></div>
+  <div><h5>Navigate</h5><a href="#" onclick="go('about');return false">About</a><a href="#" onclick="go('academics');return false">Academics</a><a href="#" onclick="go('teachers');return false">Teachers</a><a href="#" onclick="go('results');return false">Results</a><a href="#" onclick="go('gallery');return false">Gallery</a></div>
+  <div><h5>Contact</h5><a href="#">01XXXXXXXXX</a><a href="#">kashianipilot@edu.bd</a><a href="#" onclick="go('notice');return false">Notice Board</a><a href="#" onclick="go('contact');return false">Send Enquiry</a></div>
+</div>
+<div class="fbar">© 2025 <span>Kashiani GS Pilot High School</span>. All rights reserved.</div>
+</div>
+
+<!-- ═══ ABOUT ═══ -->
+<div id="about" class="page">
+<nav><div class="logo" onclick="go('home')"><div class="crest"><span>KGS</span></div><div class="logo-t"><div class="n1">Kashiani GS Pilot HS</div><div class="n2">Est. 1954</div></div></div><div class="navl"><button class="nb" onclick="go('home')">Home</button><button class="nb on">About</button><button class="nb" onclick="go('academics')">Academics</button><button class="nb" onclick="go('teachers')">Teachers</button><button class="nb" onclick="go('results')">Results</button><button class="nb" onclick="go('gallery')">Gallery</button><button class="nb" onclick="go('notice')">Notice</button><button class="nb" onclick="go('contact')">Contact</button></div><button class="nbtn" onclick="go('contact')">Enquire</button></nav>
+<div style="background:var(--bg2);padding:44px 1.5rem 52px;border-bottom:1px solid var(--border)">
+  <div class="inn">
+    <div class="eyb"><div class="bar"></div><span>About the School</span></div>
+    <h1 style="font-family:'Space Grotesk',sans-serif;font-size:2.4rem;font-weight:700;color:var(--white);margin-top:8px;letter-spacing:-.5px">Our history, mission & identity</h1>
+    <p style="color:var(--white3);font-size:15px;max-width:540px;margin-top:10px">Founded in 1954, serving Kashiani for over 70 years with pride.</p>
+  </div>
+</div>
+<div class="sec" style="background:var(--bg2)">
+  <div class="inn">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:36px;align-items:start">
+      <div>
+        <div class="eyb"><div class="bar"></div><span>Our Story</span></div>
+        <h2 class="sec-h" style="font-size:1.6rem">Seven decades of service</h2>
+        <p style="color:var(--white3);font-size:14.5px;line-height:1.8;margin-bottom:14px">Kashiani GS Pilot High School was established in 1954 by visionary community leaders who recognized the urgent need for quality secondary education in Gopalganj district.</p>
+        <p style="color:var(--white3);font-size:14.5px;line-height:1.8;margin-bottom:14px">Granted "Pilot" status by the Government of Bangladesh, the school was entrusted with demonstrating best practices that could be replicated across the region — shaping our identity as rigorous, inclusive, and community-rooted.</p>
+        <div class="qblock">"This school did not merely educate us — it shaped who we became as citizens of Bangladesh."<br><span style="font-size:12px;font-style:normal;color:var(--white3);display:block;margin-top:8px">— A 1978 alumnus, Senior Government Officer</span></div>
+        <p style="color:var(--white3);font-size:14.5px;line-height:1.8">Today, over 1,200 students across Classes 6–10 are served by a dedicated faculty of 48, across three academic streams.</p>
+      </div>
+      <div>
+        <div class="eyb"><div class="bar"></div><span>Key Information</span></div>
+        <h2 class="sec-h" style="font-size:1.5rem;margin-bottom:16px">School profile</h2>
+        <table class="itab">
+          <tr><td>Full Name</td><td>Kashiani GS Pilot High School</td></tr>
+          <tr><td>Established</td><td>1954</td></tr>
+          <tr><td>Type</td><td>Govt. Pilot Secondary School</td></tr>
+          <tr><td>Location</td><td>Kashiani, Gopalganj, BD</td></tr>
+          <tr><td>Board</td><td>Dhaka Education Board</td></tr>
+          <tr><td>Classes</td><td>VI – X (JSC & SSC)</td></tr>
+          <tr><td>Streams</td><td>Science · Humanities · Business</td></tr>
+          <tr><td>Students</td><td>1,200+</td></tr>
+          <tr><td>Faculty</td><td>48 Teachers</td></tr>
+          <tr><td>Campus</td><td>3 Acres</td></tr>
+          <tr><td>Principal</td><td>Md. Abul Kalam Azad</td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="divl"></div>
+    <div class="eyb"><div class="bar"></div><span>Milestones</span></div>
+    <h2 class="sec-h" style="margin-bottom:28px">School timeline</h2>
+    <div class="tl">
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-yr">1954</div><h4>School Founded</h4><p>Established with 80 students, Classes VI–VIII, by local community leaders of Kashiani thana.</p></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-yr">1961</div><h4>Government Recognition</h4><p>Formally recognized as a Grade-A secondary institution by East Pakistan education authorities.</p></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-yr">1975</div><h4>Pilot Status Awarded</h4><p>Designated as a Government Pilot High School by the Bangladesh Ministry of Education post-independence.</p></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-yr">1990</div><h4>Science Labs Built</h4><p>Dedicated Physics, Chemistry, and Biology labs opened for practical curriculum delivery.</p></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-yr">2005</div><h4>Computer Lab Launched</h4><p>30-seat ICT lab established, integrating digital education into the core curriculum.</p></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-yr">2018</div><h4>New Academic Building</h4><p>4-storey academic block with modern classrooms, library wing, and staffroom complex completed.</p></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-yr">2024</div><h4>Record SSC Results</h4><p>96% pass rate — 14 students achieved GPA-5.0, the best result in school history.</p></div>
+    </div>
+  </div>
+</div>
+<div class="foot"><div><div class="f-logo">Kashiani GS Pilot High School</div><p>Kashiani, Gopalganj · Est. 1954</p></div><div><h5>Navigate</h5><a href="#" onclick="go('home');return false">Home</a><a href="#" onclick="go('academics');return false">Academics</a><a href="#" onclick="go('teachers');return false">Teachers</a></div><div><h5>Contact</h5><a href="#">01XXXXXXXXX</a><a href="#">kashianipilot@edu.bd</a></div></div>
+<div class="fbar">© 2025 <span>Kashiani GS Pilot High School</span>.</div>
+</div>
+
+<!-- ═══ ACADEMICS ═══ -->
+<div id="academics" class="page">
+<nav><div class="logo" onclick="go('home')"><div class="crest"><span>KGS</span></div><div class="logo-t"><div class="n1">Kashiani GS Pilot HS</div><div class="n2">Est. 1954</div></div></div><div class="navl"><button class="nb" onclick="go('home')">Home</button><button class="nb" onclick="go('about')">About</button><button class="nb on">Academics</button><button class="nb" onclick="go('teachers')">Teachers</button><button class="nb" onclick="go('results')">Results</button><button class="nb" onclick="go('gallery')">Gallery</button><button class="nb" onclick="go('notice')">Notice</button><button class="nb" onclick="go('contact')">Contact</button></div><button class="nbtn" onclick="go('contact')">Enquire</button></nav>
+<div style="background:var(--bg2);padding:44px 1.5rem 52px;border-bottom:1px solid var(--border)">
+  <div class="inn"><div class="eyb"><div class="bar"></div><span>Academics</span></div><h1 style="font-family:'Space Grotesk',sans-serif;font-size:2.4rem;font-weight:700;color:var(--white);margin-top:8px;letter-spacing:-.5px">Curriculum, streams & facilities</h1></div>
+</div>
+<div class="sec" style="background:var(--bg2)">
+  <div class="inn">
+    <div class="eyb"><div class="bar"></div><span>Streams</span></div>
+    <h2 class="sec-h">Academic pathways</h2>
+    <div class="g3" style="margin-bottom:40px">
+      <div class="card"><div class="card-ic c-cyan"><i class="ti ti-atom" style="font-size:18px;color:var(--cyan)" aria-hidden="true"></i></div><h3>Science Stream</h3><p>Physics · Chemistry · Biology · Higher Mathematics. Gateway to engineering, medicine, and research.</p></div>
+      <div class="card"><div class="card-ic c-gold"><i class="ti ti-book" style="font-size:18px;color:var(--gold)" aria-hidden="true"></i></div><h3>Humanities Stream</h3><p>History · Geography · Civics · Economics. Pathways to law, social sciences, journalism, and public service.</p></div>
+      <div class="card"><div class="card-ic c-cyan"><i class="ti ti-chart-bar" style="font-size:18px;color:var(--cyan)" aria-hidden="true"></i></div><h3>Business Stream</h3><p>Accounting · Business Studies · Finance & Banking. Foundations for commerce and management careers.</p></div>
+    </div>
+    <div class="eyb"><div class="bar"></div><span>Class Structure</span></div>
+    <h2 class="sec-h">Year groups</h2>
+    <div class="g2" style="margin-bottom:40px">
+      <div class="card"><h3>Class VI – VIII · JSC Level</h3><p>Core foundation: Bengali, English, Mathematics, General Science, Religion, Social Studies, ICT. Mixed-ability classrooms with a strong pastoral system.</p></div>
+      <div class="card"><h3>Class IX – X · SSC Level</h3><p>Stream specialization begins. Students choose Science, Humanities, or Business. Dedicated subject teachers, board exam prep, and tutorial support.</p></div>
+    </div>
+    <div class="eyb"><div class="bar"></div><span>Facilities</span></div>
+    <h2 class="sec-h">Campus infrastructure</h2>
+    <div class="g3" style="margin-bottom:40px">
+      <div class="card"><div class="card-ic c-cyan"><i class="ti ti-flask" style="font-size:18px;color:var(--cyan)" aria-hidden="true"></i></div><h3>Science Labs</h3><p>Separate labs for Physics, Chemistry, and Biology with apparatus for SSC practical examinations.</p></div>
+      <div class="card"><div class="card-ic c-gold"><i class="ti ti-device-desktop" style="font-size:18px;color:var(--gold)" aria-hidden="true"></i></div><h3>Computer Lab</h3><p>30-seat lab with internet access. ICT is compulsory for all students from Class VI.</p></div>
+      <div class="card"><div class="card-ic c-cyan"><i class="ti ti-books" style="font-size:18px;color:var(--cyan)" aria-hidden="true"></i></div><h3>Library</h3><p>4,000+ volumes — textbooks, references, literature, science journals, and newspapers.</p></div>
+      <div class="card"><div class="card-ic c-gold"><i class="ti ti-run" style="font-size:18px;color:var(--gold)" aria-hidden="true"></i></div><h3>Sports Ground</h3><p>Full-size football and cricket ground. Annual sports day held every December.</p></div>
+      <div class="card"><div class="card-ic c-cyan"><i class="ti ti-building" style="font-size:18px;color:var(--cyan)" aria-hidden="true"></i></div><h3>Assembly Hall</h3><p>500-capacity hall for morning assembly, cultural events, prize-giving, and parent meetings.</p></div>
+      <div class="card"><div class="card-ic c-gold"><i class="ti ti-moon" style="font-size:18px;color:var(--gold)" aria-hidden="true"></i></div><h3>Prayer Hall</h3><p>Dedicated space for Jumu'ah and daily prayers for students and staff.</p></div>
+    </div>
+    <div class="divl"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px">
+      <div>
+        <div class="eyb"><div class="bar"></div><span>Daily Schedule</span></div>
+        <h2 class="sec-h" style="font-size:1.4rem;margin-bottom:14px">School routine</h2>
+        <table class="itab">
+          <tr><td>School Days</td><td>Sunday – Thursday</td></tr>
+          <tr><td>Morning Assembly</td><td>8:00 AM</td></tr>
+          <tr><td>Classes Begin</td><td>8:15 AM</td></tr>
+          <tr><td>Tiffin Break</td><td>11:00 – 11:30 AM</td></tr>
+          <tr><td>Classes End</td><td>2:00 PM</td></tr>
+          <tr><td>Weekend</td><td>Friday & Saturday</td></tr>
+        </table>
+      </div>
+      <div>
+        <div class="eyb"><div class="bar"></div><span>Examinations</span></div>
+        <h2 class="sec-h" style="font-size:1.4rem;margin-bottom:14px">Exam calendar</h2>
+        <table class="itab">
+          <tr><td>Half-Yearly Exam</td><td>July</td></tr>
+          <tr><td>Annual Exam</td><td>November – December</td></tr>
+          <tr><td>JSC (Board)</td><td>November</td></tr>
+          <tr><td>SSC (Board)</td><td>February</td></tr>
+          <tr><td>Test Exam</td><td>January</td></tr>
+          <tr><td>Result Day</td><td>May (SSC)</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="foot"><div><div class="f-logo">Kashiani GS Pilot High School</div><p>Kashiani, Gopalganj · Est. 1954</p></div><div><h5>Navigate</h5><a href="#" onclick="go('home');return false">Home</a><a href="#" onclick="go('teachers');return false">Teachers</a><a href="#" onclick="go('results');return false">Results</a></div><div><h5>Contact</h5><a href="#">01XXXXXXXXX</a><a href="#">kashianipilot@edu.bd</a></div></div>
+<div class="fbar">© 2025 <span>Kashiani GS Pilot High School</span>.</div>
+</div>
+
+<!-- ═══ TEACHERS ═══ -->
+<div id="teachers" class="page">
+<nav><div class="logo" onclick="go('home')"><div class="crest"><span>KGS</span></div><div class="logo-t"><div class="n1">Kashiani GS Pilot HS</div><div class="n2">Est. 1954</div></div></div><div class="navl"><button class="nb" onclick="go('home')">Home</button><button class="nb" onclick="go('about')">About</button><button class="nb" onclick="go('academics')">Academics</button><button class="nb on">Teachers</button><button class="nb" onclick="go('results')">Results</button><button class="nb" onclick="go('gallery')">Gallery</button><button class="nb" onclick="go('notice')">Notice</button><button class="nb" onclick="go('contact')">Contact</button></div><button class="nbtn" onclick="go('contact')">Enquire</button></nav>
+<div style="background:var(--bg2);padding:44px 1.5rem 52px;border-bottom:1px solid var(--border)">
+  <div class="inn"><div class="eyb"><div class="bar"></div><span>Faculty</span></div><h1 style="font-family:'Space Grotesk',sans-serif;font-size:2.4rem;font-weight:700;color:var(--white);margin-top:8px;letter-spacing:-.5px">Meet our teachers</h1><p style="color:var(--white3);margin-top:10px;max-width:480px">48 dedicated educators — click any card for full details.</p></div>
+</div>
+<div class="sec">
+  <div class="inn">
+    <div class="search-wrap"><i class="ti ti-search"></i><input type="text" placeholder="Search by name, subject or department..." id="t-search" oninput="filterTeachers()"></div>
+    <div class="fpills" id="dept-pills"></div>
+    <div class="tgrid" id="tgrid"></div>
+  </div>
+</div>
+<div id="modal-wrap">
+  <div class="modal-bg">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal()"><i class="ti ti-x" style="font-size:14px"></i></button>
+      <div id="modal-content"></div>
+    </div>
+  </div>
+</div>
+<div class="foot"><div><div class="f-logo">Kashiani GS Pilot High School</div><p>Kashiani, Gopalganj · Est. 1954</p></div><div><h5>Navigate</h5><a href="#" onclick="go('home');return false">Home</a><a href="#" onclick="go('about');return false">About</a><a href="#" onclick="go('contact');return false">Contact</a></div><div><h5>Contact</h5><a href="#">01XXXXXXXXX</a><a href="#">kashianipilot@edu.bd</a></div></div>
+<div class="fbar">© 2025 <span>Kashiani GS Pilot High School</span>.</div>
+</div>
+
+<!-- ═══ RESULTS ═══ -->
+<div id="results" class="page">
+<nav><div class="logo" onclick="go('home')"><div class="crest"><span>KGS</span></div><div class="logo-t"><div class="n1">Kashiani GS Pilot HS</div><div class="n2">Est. 1954</div></div></div><div class="navl"><button class="nb" onclick="go('home')">Home</button><button class="nb" onclick="go('about')">About</button><button class="nb" onclick="go('academics')">Academics</button><button class="nb" onclick="go('teachers')">Teachers</button><button class="nb on">Results</button><button class="nb" onclick="go('gallery')">Gallery</button><button class="nb" onclick="go('notice')">Notice</button><button class="nb" onclick="go('contact')">Contact</button></div><button class="nbtn" onclick="go('contact')">Enquire</button></nav>
+<div style="background:var(--bg2);padding:44px 1.5rem 52px;border-bottom:1px solid var(--border)">
+  <div class="inn"><div class="eyb"><div class="bar"></div><span>Examination Results</span></div><h1 style="font-family:'Space Grotesk',sans-serif;font-size:2.4rem;font-weight:700;color:var(--white);margin-top:8px;letter-spacing:-.5px">Academic performance dashboard</h1></div>
+</div>
+<div class="sec">
+  <div class="inn">
+    <div class="eyb"><div class="bar"></div><span>SSC 2024 Overview</span></div>
+    <h2 class="sec-h" style="margin-bottom:20px">SSC examination 2024</h2>
+    <div class="dash-grid">
+      <div class="dcard"><div class="dn">312</div><div class="dl">Total Appeared</div></div>
+      <div class="dcard"><div class="dn">300</div><div class="dl">Total Passed</div></div>
+      <div class="dcard"><div class="dn">96%</div><div class="dl">Pass Rate</div></div>
+      <div class="dcard"><div class="dn">14</div><div class="dl">GPA-5 Students</div></div>
+    </div>
+    <div class="eyb"><div class="bar"></div><span>GPA Distribution</span></div>
+    <h2 class="sec-h" style="font-size:1.4rem;margin-bottom:18px">Grade breakdown</h2>
+    <div class="result-bars" id="result-bars"></div>
+    <div class="divl"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px">
+      <div>
+        <div class="eyb"><div class="bar"></div><span>Top Performers 2024</span></div>
+        <h2 class="sec-h" style="font-size:1.4rem;margin-bottom:14px">Outstanding students</h2>
+        <table class="itab">
+          <tr><td>Best — Science</td><td style="color:var(--cyan)">Md. Rakibul Islam · GPA 5.0</td></tr>
+          <tr><td>Best — Humanities</td><td style="color:var(--cyan)">Fatema Akter · GPA 5.0</td></tr>
+          <tr><td>Best — Business</td><td style="color:var(--cyan)">Md. Saiful Islam · GPA 5.0</td></tr>
+          <tr><td>Overall Topper</td><td style="color:var(--gold)">Md. Rakibul Islam</td></tr>
+          <tr><td>Most Improved</td><td style="color:var(--white)">Class IX-B Science</td></tr>
+        </table>
+      </div>
+      <div>
+        <div class="eyb"><div class="bar"></div><span>5-Year Trend</span></div>
+        <h2 class="sec-h" style="font-size:1.4rem;margin-bottom:14px">Pass rate history</h2>
+        <table class="itab">
+          <tr><td>2020</td><td style="color:var(--white)">89.2%</td></tr>
+          <tr><td>2021</td><td style="color:var(--white)">91.5%</td></tr>
+          <tr><td>2022</td><td style="color:var(--white)">93.0%</td></tr>
+          <tr><td>2023</td><td style="color:var(--white)">94.7%</td></tr>
+          <tr><td style="color:var(--cyan);font-weight:700">2024</td><td style="color:var(--cyan);font-weight:700">96.15% ↑ Best ever</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="foot"><div><div class="f-logo">Kashiani GS Pilot High School</div><p>Kashiani, Gopalganj · Est. 1954</p></div><div><h5>Navigate</h5><a href="#" onclick="go('home');return false">Home</a><a href="#" onclick="go('academics');return false">Academics</a><a href="#" onclick="go('teachers');return false">Teachers</a></div><div><h5>Contact</h5><a href="#">01XXXXXXXXX</a><a href="#">kashianipilot@edu.bd</a></div></div>
+<div class="fbar">© 2025 <span>Kashiani GS Pilot High School</span>.</div>
+</div>
+
+<!-- ═══ GALLERY ═══ -->
+<div id="gallery" class="page">
+<nav><div class="logo" onclick="go('home')"><div class="crest"><span>KGS</span></div><div class="logo-t"><div class="n1">Kashiani GS Pilot HS</div><div class="n2">Est. 1954</div></div></div><div class="navl"><button class="nb" onclick="go('home')">Home</button><button class="nb" onclick="go('about')">About</button><button class="nb" onclick="go('academics')">Academics</button><button class="nb" onclick="go('teachers')">Teachers</button><button class="nb" onclick="go('results')">Results</button><button class="nb on">Gallery</button><button class="nb" onclick="go('notice')">Notice</button><button class="nb" onclick="go('contact')">Contact</button></div><button class="nbtn" onclick="go('contact')">Enquire</button></nav>
+<div style="background:var(--bg2);padding:44px 1.5rem 52px;border-bottom:1px solid var(--border)">
+  <div class="inn"><div class="eyb"><div class="bar"></div><span>Photo Gallery</span></div><h1 style="font-family:'Space Grotesk',sans-serif;font-size:2.4rem;font-weight:700;color:var(--white);margin-top:8px;letter-spacing:-.5px">Life at KGSPHS</h1></div>
+</div>
+<div class="sec">
+  <div class="inn">
+    <div class="fpills" id="gal-pills"></div>
+    <div class="gal-grid" id="gal-grid"></div>
+  </div>
+</div>
+<div class="foot"><div><div class="f-logo">Kashiani GS Pilot High School</div><p>Kashiani, Gopalganj · Est. 1954</p></div><div><h5>Navigate</h5><a href="#" onclick="go('home');return false">Home</a><a href="#" onclick="go('about');return false">About</a><a href="#" onclick="go('contact');return false">Contact</a></div><div><h5>Contact</h5><a href="#">01XXXXXXXXX</a><a href="#">kashianipilot@edu.bd</a></div></div>
+<div class="fbar">© 2025 <span>Kashiani GS Pilot High School</span>.</div>
+</div>
+
+<!-- ═══ NOTICE ═══ -->
+<div id="notice" class="page">
+<nav><div class="logo" onclick="go('home')"><div class="crest"><span>KGS</span></div><div class="logo-t"><div class="n1">Kashiani GS Pilot HS</div><div class="n2">Est. 1954</div></div></div><div class="navl"><button class="nb" onclick="go('home')">Home</button><button class="nb" onclick="go('about')">About</button><button class="nb" onclick="go('academics')">Academics</button><button class="nb" onclick="go('teachers')">Teachers</button><button class="nb" onclick="go('results')">Results</button><button class="nb" onclick="go('gallery')">Gallery</button><button class="nb on">Notice</button><button class="nb" onclick="go('contact')">Contact</button></div><button class="nbtn" onclick="go('contact')">Enquire</button></nav>
+<div style="background:var(--bg2);padding:44px 1.5rem 52px;border-bottom:1px solid var(--border)">
+  <div class="inn"><div class="eyb"><div class="bar"></div><span>Notice Board</span></div><h1 style="font-family:'Space Grotesk',sans-serif;font-size:2.4rem;font-weight:700;color:var(--white);margin-top:8px;letter-spacing:-.5px">Official notices & circulars</h1></div>
+</div>
+<div class="sec">
+  <div class="inn">
+    <div class="fpills" id="n-pills"></div>
+    <div class="nlist" id="n-list"></div>
+  </div>
+</div>
+<div class="foot"><div><div class="f-logo">Kashiani GS Pilot High School</div><p>Kashiani, Gopalganj · Est. 1954</p></div><div><h5>Navigate</h5><a href="#" onclick="go('home');return false">Home</a><a href="#" onclick="go('about');return false">About</a><a href="#" onclick="go('contact');return false">Contact</a></div><div><h5>Contact</h5><a href="#">01XXXXXXXXX</a><a href="#">kashianipilot@edu.bd</a></div></div>
+<div class="fbar">© 2025 <span>Kashiani GS Pilot High School</span>.</div>
+</div>
+
+<!-- ═══ CONTACT ═══ -->
+<div id="contact" class="page">
+<nav><div class="logo" onclick="go('home')"><div class="crest"><span>KGS</span></div><div class="logo-t"><div class="n1">Kashiani GS Pilot HS</div><div class="n2">Est. 1954</div></div></div><div class="navl"><button class="nb" onclick="go('home')">Home</button><button class="nb" onclick="go('about')">About</button><button class="nb" onclick="go('academics')">Academics</button><button class="nb" onclick="go('teachers')">Teachers</button><button class="nb" onclick="go('results')">Results</button><button class="nb" onclick="go('gallery')">Gallery</button><button class="nb" onclick="go('notice')">Notice</button><button class="nb on">Contact</button></div><button class="nbtn" onclick="go('contact')">Enquire</button></nav>
+<div style="background:var(--bg2);padding:44px 1.5rem 52px;border-bottom:1px solid var(--border)">
+  <div class="inn"><div class="eyb"><div class="bar"></div><span>Contact</span></div><h1 style="font-family:'Space Grotesk',sans-serif;font-size:2.4rem;font-weight:700;color:var(--white);margin-top:8px;letter-spacing:-.5px">Get in touch</h1></div>
+</div>
+<div class="sec" style="background:var(--bg2)">
+  <div class="inn">
+    <div style="display:grid;grid-template-columns:1fr 1.4fr;gap:36px;align-items:start">
+      <div>
+        <div class="eyb"><div class="bar"></div><span>Info</span></div>
+        <h2 class="sec-h" style="font-size:1.5rem;margin-bottom:20px">Contact details</h2>
+        <div style="display:flex;flex-direction:column;gap:16px;margin-bottom:24px">
+          <div style="display:flex;gap:12px;align-items:flex-start"><div style="width:36px;height:36px;background:var(--cyan3);border:1px solid var(--border2);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ti-map-pin" style="font-size:16px;color:var(--cyan)" aria-hidden="true"></i></div><div><div style="font-size:13px;font-weight:600;color:var(--white);margin-bottom:2px">Address</div><div style="font-size:13px;color:var(--white3)">Kashiani, Gopalganj District<br>Dhaka Division, Bangladesh</div></div></div>
+          <div style="display:flex;gap:12px;align-items:flex-start"><div style="width:36px;height:36px;background:var(--cyan3);border:1px solid var(--border2);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ti-phone" style="font-size:16px;color:var(--cyan)" aria-hidden="true"></i></div><div><div style="font-size:13px;font-weight:600;color:var(--white);margin-bottom:2px">Phone</div><div style="font-size:13px;color:var(--white3)">01XXXXXXXXX (Office)<br>01XXXXXXXXX (Principal)</div></div></div>
+          <div style="display:flex;gap:12px;align-items:flex-start"><div style="width:36px;height:36px;background:var(--cyan3);border:1px solid var(--border2);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ti-mail" style="font-size:16px;color:var(--cyan)" aria-hidden="true"></i></div><div><div style="font-size:13px;font-weight:600;color:var(--white);margin-bottom:2px">Email</div><div style="font-size:13px;color:var(--white3)">kashianipilot@edu.bd<br>principal@kashianipilot.edu.bd</div></div></div>
+          <div style="display:flex;gap:12px;align-items:flex-start"><div style="width:36px;height:36px;background:var(--cyan3);border:1px solid var(--border2);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ti-clock" style="font-size:16px;color:var(--cyan)" aria-hidden="true"></i></div><div><div style="font-size:13px;font-weight:600;color:var(--white);margin-bottom:2px">Office Hours</div><div style="font-size:13px;color:var(--white3)">Sun – Thu: 8:00 AM – 3:00 PM<br>Fri & Sat: Closed</div></div></div>
+        </div>
+        <div class="map-ph"><i class="ti ti-map-2" style="font-size:2rem;color:var(--white3)" aria-hidden="true"></i><span>Kashiani, Gopalganj, Bangladesh</span></div>
+      </div>
+      <div>
+        <div class="eyb"><div class="bar"></div><span>Message</span></div>
+        <h2 class="sec-h" style="font-size:1.5rem;margin-bottom:18px">Send an enquiry</h2>
+        <div class="fb">
+          <div class="fr">
+            <div class="fg"><label>Name</label><input type="text" placeholder="Your full name"></div>
+            <div class="fg"><label>Phone</label><input type="tel" placeholder="01XXXXXXXXX"></div>
+          </div>
+          <div class="fg"><label>Email</label><input type="email" placeholder="your@email.com"></div>
+          <div class="fg"><label>Subject</label><select><option>General Enquiry</option><option>Admission Information</option><option>Exam Results</option><option>Transfer Certificate</option><option>Teacher Contact</option><option>Other</option></select></div>
+          <div class="fg"><label>Message</label><textarea placeholder="Write your message here..."></textarea></div>
+          <button class="btn-c" style="width:100%" onclick="document.getElementById('csuc').style.display='block'">Send Message <i class="ti ti-send" style="font-size:14px;margin-left:6px" aria-hidden="true"></i></button>
+          <div class="succ" id="csuc"><i class="ti ti-check" style="font-size:15px;margin-right:6px" aria-hidden="true"></i>Message received! We'll respond within 2 working days.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="foot"><div><div class="f-logo">Kashiani GS Pilot High School</div><p>Kashiani, Gopalganj · Est. 1954</p></div><div><h5>Navigate</h5><a href="#" onclick="go('home');return false">Home</a><a href="#" onclick="go('about');return false">About</a><a href="#" onclick="go('academics');return false">Academics</a></div><div><h5>Contact</h5><a href="#">01XXXXXXXXX</a><a href="#">kashianipilot@edu.bd</a></div></div>
+<div class="fbar">© 2025 <span>Kashiani GS Pilot High School</span>.</div>
+</div>
+
+<script>
+function go(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  window.scrollTo(0,0);
+}
+
+function animateCount(el,target,suffix,duration){
+  let start=0,step=target/60;
+  let t=setInterval(()=>{
+    start=Math.min(start+step,target);
+    el.textContent=Math.round(start)+(suffix||'');
+    if(start>=target)clearInterval(t);
+  },duration/60);
+}
+setTimeout(()=>{
+  animateCount(document.getElementById('cnt-1'),70,'+',1200);
+  animateCount(document.getElementById('cnt-2'),1200,'+',1400);
+  animateCount(document.getElementById('cnt-3'),48,'',1000);
+  animateCount(document.getElementById('cnt-4'),96,'%',1300);
+},400);
+
+const tickerItems=[
+  '📢 SSC Form Fill-up Deadline: June 20, 2025',
+  '🏆 National Robotics Olympiad: District Round — June 18',
+  '📅 Half-Yearly Exam: July 10, 2025',
+  '🎓 Class VI Admission Result Published',
+  '🏅 Annual Sports Day: June 28, 2025',
+  '📣 Parent-Teacher Meeting: June 21, 2025',
+  '✅ SSC 2024 Results: 96% Pass Rate — School Record',
+];
+const tEl=document.getElementById('ticker-content');
+const doubled=[...tickerItems,...tickerItems];
+tEl.innerHTML=doubled.map(t=>`<span class="tick-item"><span class="dot"></span><span>${t}</span></span>`).join('');
+
+const pts=document.getElementById('pts');
+for(let i=0;i<18;i++){
+  const d=document.createElement('div');
+  d.className='dot';
+  const sz=Math.random()*3+1;
+  d.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;bottom:${Math.random()*40}%;animation-duration:${Math.random()*8+6}s;animation-delay:${Math.random()*8}s;opacity:.4`;
+  pts.appendChild(d);
+}
+
+const teachers=[
+  {init:'AK',name:'Md. Abul Kalam Azad',role:'Principal',dept:'Administration',sub:'General Admin',exp:'28 yrs',qual:'M.Sc., B.Ed., M.Ed.',bg:'#00C8FF',email:'principal@kashianipilot.edu.bd'},
+  {init:'RI',name:'Md. Rafiqul Islam',role:'Asst. Headmaster',dept:'Administration',sub:'Scheduling & Discipline',exp:'22 yrs',qual:'M.A., B.Ed.',bg:'#00A8D8',email:'office@kashianipilot.edu.bd'},
+  {init:'SB',name:'Md. Shahidul Bhuiya',role:'Senior Teacher',dept:'Science',sub:'Physics',exp:'18 yrs',qual:'M.Sc. Physics, B.Ed.',bg:'#1D9E75',email:'science@kashianipilot.edu.bd'},
+  {init:'NU',name:'Md. Nasir Uddin',role:'Senior Teacher',dept:'Science',sub:'Chemistry',exp:'16 yrs',qual:'M.Sc. Chemistry',bg:'#1D9E75',email:'science@kashianipilot.edu.bd'},
+  {init:'FB',name:'Fatema Begum',role:'Teacher',dept:'Science',sub:'Biology',exp:'12 yrs',qual:'M.Sc. Biology, B.Ed.',bg:'#1D9E75',email:'science@kashianipilot.edu.bd'},
+  {init:'KH',name:'Md. Kamal Hossain',role:'Senior Teacher',dept:'Mathematics',sub:'Mathematics',exp:'20 yrs',qual:'M.Sc. Mathematics',bg:'#7F77DD',email:'math@kashianipilot.edu.bd'},
+  {init:'RK',name:'Roksana Khanam',role:'Teacher',dept:'Mathematics',sub:'Higher Math',exp:'10 yrs',qual:'M.Sc. Math, B.Ed.',bg:'#7F77DD',email:'math@kashianipilot.edu.bd'},
+  {init:'MA',name:'Md. Mahabub Alam',role:'Senior Teacher',dept:'Bengali',sub:'Bengali Language',exp:'19 yrs',qual:'M.A. Bangla, B.Ed.',bg:'#BA7517',email:'bengali@kashianipilot.edu.bd'},
+  {init:'SJ',name:'Sumaiya Jahan',role:'Teacher',dept:'Bengali',sub:'Bengali Literature',exp:'8 yrs',qual:'M.A. Bangla',bg:'#BA7517',email:'bengali@kashianipilot.edu.bd'},
+  {init:'AH',name:'Md. Anisul Huq',role:'Senior Teacher',dept:'English',sub:'English Language',exp:'17 yrs',qual:'M.A. English, B.Ed.',bg:'#378ADD',email:'english@kashianipilot.edu.bd'},
+  {init:'PM',name:'Priya Mondol',role:'Teacher',dept:'English',sub:'English Literature',exp:'9 yrs',qual:'M.A. English',bg:'#378ADD',email:'english@kashianipilot.edu.bd'},
+  {init:'IH',name:'Md. Imran Hossain',role:'Teacher',dept:'Social Science',sub:'History & Geography',exp:'11 yrs',qual:'M.A. History, B.Ed.',bg:'#D85A30',email:'social@kashianipilot.edu.bd'},
+  {init:'NK',name:'Nasrin Khatun',role:'Teacher',dept:'Social Science',sub:'Social Studies',exp:'7 yrs',qual:'M.A. Geography',bg:'#D85A30',email:'social@kashianipilot.edu.bd'},
+  {init:'TI',name:'Md. Tariqul Islam',role:'Senior Teacher',dept:'Religion',sub:'Islamic Studies',exp:'15 yrs',qual:'M.A. Islamic Studies',bg:'#639922',email:'religion@kashianipilot.edu.bd'},
+  {init:'RH',name:'Md. Rezaul Haque',role:'Teacher',dept:'ICT',sub:'Computer & ICT',exp:'8 yrs',qual:'B.Sc. CSE, M.Ed.',bg:'#534AB7',email:'ict@kashianipilot.edu.bd'},
+  {init:'SI',name:'Md. Saidur Islam',role:'Teacher',dept:'Business',sub:'Accounting',exp:'13 yrs',qual:'M.Com, B.Ed.',bg:'#993556',email:'business@kashianipilot.edu.bd'},
+  {init:'MB',name:'Md. Mozammel Bari',role:'Teacher',dept:'Business',sub:'Business Studies',exp:'10 yrs',qual:'M.B.A., B.Ed.',bg:'#993556',email:'business@kashianipilot.edu.bd'},
+  {init:'LB',name:'Layla Begum',role:'Teacher',dept:'Arts',sub:'Fine Arts & Culture',exp:'9 yrs',qual:'M.F.A.',bg:'#D85A30',email:'arts@kashianipilot.edu.bd'},
+];
+const depts=['All','Administration','Science','Mathematics','Bengali','English','Social Science','Religion','ICT','Business','Arts'];
+let activeDept='All';
+
+function renderTeachers(){
+  const q=(document.getElementById('t-search')||{}).value||'';
+  const filtered=teachers.filter(t=>{
+    const matchD=activeDept==='All'||t.dept===activeDept;
+    const matchQ=!q||t.name.toLowerCase().includes(q.toLowerCase())||t.sub.toLowerCase().includes(q.toLowerCase())||t.dept.toLowerCase().includes(q.toLowerCase());
+    return matchD&&matchQ;
+  });
+  const grid=document.getElementById('tgrid');
+  if(!grid)return;
+  grid.innerHTML=filtered.length?filtered.map((t,i)=>`
+    <div class="tc" onclick="openTeacher(${teachers.indexOf(t)})">
+      <div class="tc-top">
+        <div class="av" style="background:${t.bg}">${t.init}</div>
+        <h4>${t.name}</h4>
+        <div class="tr">${t.role}</div>
+        <span class="dbadge">${t.dept}</span>
+      </div>
+      <div class="tc-bot">
+        <div class="tc-r"><i class="ti ti-book"></i> ${t.sub}</div>
+        <div class="tc-r"><i class="ti ti-clock"></i> ${t.exp} experience</div>
+        <div class="tc-r"><i class="ti ti-award"></i> ${t.qual.split(',')[0]}</div>
+      </div>
+    </div>`).join(''):'<p style="color:var(--white3);font-size:14px">No teachers found.</p>';
+}
+function renderDeptPills(){
+  const c=document.getElementById('dept-pills');
+  if(!c)return;
+  c.innerHTML=depts.map(d=>`<button class="fp${d===activeDept?' on':''}" onclick="setDept('${d}')">${d}</button>`).join('');
+}
+function setDept(d){activeDept=d;renderDeptPills();renderTeachers();}
+function filterTeachers(){renderTeachers();}
+function openTeacher(i){
+  const t=teachers[i];
+  const w=document.getElementById('modal-wrap');
+  const mc=document.getElementById('modal-content');
+  mc.innerHTML=`
+    <div style="display:flex;align-items:center;gap:14px;margin-bottom:18px">
+      <div class="av" style="background:${t.bg};width:56px;height:56px;flex-shrink:0">${t.init}</div>
+      <div><div style="font-family:'Space Grotesk',sans-serif;font-size:17px;font-weight:700;color:var(--white)">${t.name}</div>
+      <div style="font-size:13px;color:var(--white3);margin-top:2px">${t.role}</div>
+      <span class="dbadge">${t.dept}</span></div>
+    </div>
+    <table class="itab">
+      <tr><td>Subject</td><td>${t.sub}</td></tr>
+      <tr><td>Qualification</td><td>${t.qual}</td></tr>
+      <tr><td>Experience</td><td>${t.exp}</td></tr>
+      <tr><td>Email</td><td style="color:var(--cyan)">${t.email}</td></tr>
+    </table>`;
+  w.style.display='block';
+}
+function closeModal(){document.getElementById('modal-wrap').style.display='none';}
+renderDeptPills();renderTeachers();
+
+const resultData=[
+  {label:'GPA 5.0',val:14,max:312,color:'#00C8FF'},
+  {label:'GPA 4.0–4.9',val:78,max:312,color:'#1D9E75'},
+  {label:'GPA 3.0–3.9',val:110,max:312,color:'#7F77DD'},
+  {label:'GPA 2.0–2.9',val:65,max:312,color:'#F5B800'},
+  {label:'GPA 1.0–1.9',val:33,max:312,color:'#D85A30'},
+  {label:'Failed',val:12,max:312,color:'#E24B4A'},
+];
+const rb=document.getElementById('result-bars');
+if(rb){
+  rb.innerHTML=resultData.map(r=>{
+    const pct=Math.round(r.val/r.max*100);
+    return`<div class="rb-row">
+      <div class="rb-label">${r.label}</div>
+      <div class="rb-track"><div class="rb-fill" style="width:${pct}%;background:${r.color}"></div></div>
+      <div class="rb-val" style="color:${r.color}">${r.val}</div>
+    </div>`;}).join('');
+}
+
+const galleryData=[
+  {cat:'Campus',icon:'🏫',bg:'#0A1A28',title:'Main Academic Building','yr':'2024'},
+  {cat:'Sports',icon:'⚽',bg:'#0A1A18',title:'Annual Sports Day 2024','yr':'2024'},
+  {cat:'Events',icon:'🎭',bg:'#180A28',title:'Cultural Programme — Independence Day','yr':'2024'},
+  {cat:'Classroom',icon:'📖',bg:'#1A180A',title:'Class IX Science Practical','yr':'2024'},
+  {cat:'Sports',icon:'🏏',bg:'#0A1A18',title:'Inter-school Cricket Tournament','yr':'2023'},
+  {cat:'Events',icon:'🏆',bg:'#1A0A18',title:'Prize-Giving Ceremony 2023','yr':'2023'},
+  {cat:'Campus',icon:'📚',bg:'#0A1A28',title:'School Library Interior','yr':'2023'},
+  {cat:'Classroom',icon:'💻',bg:'#0A0A28',title:'Computer Lab ICT Session','yr':'2024'},
+  {cat:'Events',icon:'🌿',bg:'#0A1A0A',title:'Tree Plantation Drive','yr':'2024'},
+  {cat:'Sports',icon:'🏅',bg:'#1A1A0A',title:'Athletics — District Champions','yr':'2023'},
+  {cat:'Campus',icon:'🕌',bg:'#0A1420',title:'School Prayer Hall','yr':'2023'},
+  {cat:'Events',icon:'📜',bg:'#1A0A0A',title:'SSC Result Celebration 2024','yr':'2024'},
+];
+const galCats=['All','Campus','Sports','Events','Classroom'];
+let galCat='All';
+function renderGallery(){
+  const g=document.getElementById('gal-grid');
+  if(!g)return;
+  const d=galCat==='All'?galleryData:galleryData.filter(x=>x.cat===galCat);
+  g.innerHTML=d.map(x=>`<div class="gi"><div class="gi-cell" style="background:${x.bg}">${x.icon}</div><div class="gi-cap"><p>${x.title}</p><span>${x.cat} · ${x.yr}</span></div></div>`).join('');
+}
+function renderGalPills(){
+  const c=document.getElementById('gal-pills');
+  if(!c)return;
+  c.innerHTML=galCats.map(c2=>`<button class="fp${c2===galCat?' on':''}" onclick="setGal('${c2}')">${c2}</button>`).join('');
+}
+function setGal(c){galCat=c;renderGalPills();renderGallery();}
+renderGalPills();renderGallery();
+
+const notices=[
+  {tag:'Urgent',cls:'urg',title:'SSC Examination Form Fill-up — Deadline June 20',body:'Class X students must submit completed forms with fees to the school office before 20 June 2025. Late submissions not accepted.',date:'Jun 5, 2025'},
+  {tag:'Academic',cls:'',title:'Half-Yearly Examination Schedule Published',body:'Exams begin 10 July 2025. Detailed routine available at the notice board and school office.',date:'Jun 2, 2025'},
+  {tag:'Event',cls:'evt',title:'Annual Sports Day — June 28, 2025',body:'All students must participate. Parents and guardians are warmly invited. Venue: School Ground.',date:'May 28, 2025'},
+  {tag:'Academic',cls:'',title:'Class VI Admission Test Result',body:'Result published for 2025–26 session. Selected students must confirm enrollment by June 25.',date:'May 20, 2025'},
+  {tag:'General',cls:'',title:'Holiday Notice — June 12, Budget Day',body:'School closed on June 12, 2025 per government directive.',date:'May 18, 2025'},
+  {tag:'General',cls:'',title:'New Library Books — 200 Volumes Added',body:'The library has received 200 new reference books, novels, and science journals. Consult the librarian for access.',date:'May 10, 2025'},
+  {tag:'Urgent',cls:'urg',title:'Unpaid Tuition Fees — Final Warning',body:'Outstanding fees for March–May 2025 must be cleared immediately. Exam admit cards may be withheld.',date:'May 5, 2025'},
+  {tag:'Event',cls:'evt',title:'Parent-Teacher Meeting — June 21',body:'Bi-annual PTM on June 21. All parents are requested to meet their child\'s class teacher.',date:'Apr 28, 2025'},
+];
+const nCats=['All','Urgent','Academic','Event','General'];
+const nColors={Urgent:{bg:'rgba(226,75,74,.15)',c:'#E24B4A'},Academic:{bg:'rgba(0,200,255,.1)',c:var_cyan_str()},Event:{bg:'rgba(29,158,117,.15)',c:'#1D9E75'},General:{bg:'rgba(255,255,255,.05)',c:'rgba(240,244,255,.5)'}};
+function var_cyan_str(){return'#00C8FF'}
+let nCat='All';
+function renderNotices(){
+  const el=document.getElementById('n-list');
+  if(!el)return;
+  const d=nCat==='All'?notices:notices.filter(n=>n.tag===nCat);
+  el.innerHTML=d.map(n=>{
+    const col=nColors[n.tag]||nColors.General;
+    return`<div class="nc${n.cls?' '+n.cls:''}"><div><span class="ntag" style="background:${col.bg};color:${col.c}">${n.tag}</span><h4>${n.title}</h4><p>${n.body}</p></div><span class="ndate">${n.date}</span></div>`;}).join('');
+}
+function renderNPills(){
+  const c=document.getElementById('n-pills');
+  if(!c)return;
+  c.innerHTML=nCats.map(x=>`<button class="fp${x===nCat?' on':''}" onclick="setN('${x}')">${x}</button>`).join('');
+}
+function setN(x){nCat=x;renderNPills();renderNotices();}
+renderNPills();renderNotices();
+
+const hn=document.getElementById('home-notices');
+if(hn){
+  hn.innerHTML=notices.slice(0,3).map(n=>{
+    const col=nColors[n.tag]||nColors.General;
+    return`<div class="nc${n.cls?' '+n.cls:''}"><div><span class="ntag" style="background:${col.bg};color:${col.c}">${n.tag}</span><h4>${n.title}</h4><p style="font-size:12.5px;color:var(--white3)">${n.date}</p></div></div>`;}).join('');
+}
+</script>
